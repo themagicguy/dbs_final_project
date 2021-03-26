@@ -37,7 +37,7 @@ int main(void) {
 
     // User Variables
     string user = "dbs211_211k39";
-    string pass = "31460802";
+    string pass = "xxxxxx";
     string constr = "myoracle12c.senecacollege.ca:1521/oracle12c";
 
     try{
