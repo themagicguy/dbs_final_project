@@ -36,8 +36,8 @@ int main(void) {
     Connection* conn = nullptr;
 
     // User Variables
-    string user = "dbs211_211k20";
-    string pass = "xxxxxxx";
+    string user = "dbs211_211k39";
+    string pass = "31460802";
     string constr = "myoracle12c.senecacollege.ca:1521/oracle12c";
 
     try{
@@ -60,6 +60,7 @@ int main(void) {
                 int tmp = findEmployee(conn, employeeNum, &emp);
                 if (tmp) {
                     //call display function here
+                    displayEmployee(conn, emp);
                 }
                 else {
                     cout << "Employee " << employeeNum << " does not exist" << endl;
@@ -181,17 +182,16 @@ int findEmployee(Connection* conn, int employeeNumber, struct Employee* emp) {
 
 void displayEmployee(Connection* conn, struct Employee emp)
 {
-    int empNumber;
     cout << "please enter the employee number: "; 
     int empNumber = getInt();
 
-    if (findEmployee(empNumber) == 0)
+    if (findEmployee(conn, empNumber, &emp) == 0)
     {
         cout << "Employee " << empNumber << "does not exist" << endl; 
     }
     else
     {
-        displayEmployee(/*SOMETHING*/); 
+        displayEmployee(conn, emp); 
     }
 
 }
