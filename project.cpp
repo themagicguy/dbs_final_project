@@ -194,7 +194,17 @@ void displayEmployee(Connection* conn, struct Employee emp)
     }
     else
     {
-        displayEmployee(conn, emp); 
+        cout << "-------------- Employee Information -------------" << endl
+            << "Employee Number: " << emp.employeeNumber << endl
+            << "Last Name: " << emp.lastName << endl
+            << "First Name: " << emp.firstName << endl
+            << "Extension: " << emp.extension << endl
+            << "Email: " << emp.email << endl
+            << "Office Code: " << emp.officecode << endl
+            << "Manager ID :" << emp.reportsTo << endl
+            << "Job Title: " << emp.jobTitle << endl;
+        //cout << "Employee found!!" << endl;
+        //displayEmployee(conn, emp); 
     }
 
 }
