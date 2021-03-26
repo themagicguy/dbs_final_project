@@ -37,7 +37,7 @@ int main(void) {
 
     // User Variables
     string user = "dbs211_211k39";
-    string pass = "xxxxxx";
+    string pass = "31460802";
     string constr = "myoracle12c.senecacollege.ca:1521/oracle12c";
 
     try{
@@ -104,7 +104,10 @@ int const menuu()  {
     
     do {
         tmp = getInt("Enter an option (0-5): ");
-        if (tmp > 5 || tmp < 0) { cout << "Invalid option, try again" << endl; }
+        if (tmp > 5 || tmp < 0) 
+        {
+            cout << "Invalid option, try again" << endl; 
+        }
         else { flag = true; }
     } while (!flag);
 
@@ -124,7 +127,7 @@ int getInt(string prompt) {
      do {
         cin >> input;
 
-        if (cin.fail() || input < -1 || input > 6) {
+        if (cin.fail()) {
             cerr << "Invalid option, try again" << endl;
             cin.clear();
             cin.ignore(1000, '\n');
