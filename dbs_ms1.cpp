@@ -1,5 +1,3 @@
-<<<<<<< Updated upstream:project.cpp
-=======
 /*
 Group: 2;
 Danny Lei
@@ -7,7 +5,6 @@ Shawn Yu
 <name>
 */
 
->>>>>>> Stashed changes:dbs_ms1.cpp
 #define _CRT_SECURE_NO_WARNINGS
 
 #include <iostream>
@@ -35,20 +32,12 @@ struct Employee
 };
 
 //prototypes
-<<<<<<< Updated upstream:project.cpp
-int const menuu();
-int findEmployee(Connection *conn, int employeeNumber, struct Employee* emp);
-int getInt(string prompt = nullptr);
-void displayEmployee(Connection* conn, struct Employee emp);
-
-=======
 int const menu();
 int findEmployee(Connection* conn, int employeeNumber, struct Employee* emp);
 int getInt(const char* prompt = nullptr);
 void displayEmployee(Connection* conn, struct Employee* emp);
 void insertEmployee(Connection* conn, struct Employee* emp);
 void displayAllEmployees(Connection* conn);
->>>>>>> Stashed changes:dbs_ms1.cpp
 
 int main(void) {
     // OCCI Variables
@@ -57,10 +46,10 @@ int main(void) {
 
     // User Variables
     string user = "dbs211_211k20";
-    string pass = "xxxxxxx";
+    string pass = "36932186";
     string constr = "myoracle12c.senecacollege.ca:1521/oracle12c";
 
-    try{
+    try {
         env = Environment::createEnvironment(Environment::DEFAULT);
         conn = env->createConnection(user, pass, constr);
         cout << "Connection is Successful!" << endl;
@@ -69,36 +58,25 @@ int main(void) {
 
         bool flag = false;
         do {
-<<<<<<< Updated upstream:project.cpp
-            int menu = menuu();
-            if (menu == 0) {
-=======
             struct Employee emp{};
             int menuSelection = menu();
             if (menuSelection == 0) {
->>>>>>> Stashed changes:dbs_ms1.cpp
                 cout << "Ending program... " << endl;
                 flag = true;
             }
-            else if (menu == 1) {
+            else if (menuSelection == 1) {
                 // Find Employee
                 int employeeNum = getInt("Enter employee number: ");
 
                 int tmp = findEmployee(conn, employeeNum, &emp);
                 if (tmp) {
                     //call display function here
+                    displayEmployee(conn, &emp);
                 }
                 else {
                     cout << "Employee " << employeeNum << " does not exist" << endl;
                 }
             }
-<<<<<<< Updated upstream:project.cpp
-            else if (menu == 2) {
-            cout << "function not yet available" << endl;   
-            }
-            else if (menu == 3) {
-            cout << "function not yet available" << endl;   
-=======
             else if (menuSelection == 2) {
                 displayAllEmployees(conn);
             }
@@ -122,28 +100,27 @@ int main(void) {
                     insertEmployee(conn, &emp);
                 }
                 else { cout << "This employee already exist" << endl; }
->>>>>>> Stashed changes:dbs_ms1.cpp
             }
-            else if (menu == 4) {
-            cout << "function not yet available" << endl;
+            else if (menuSelection == 4) {
+                cout << "function not yet available" << endl;
             }
-            else if (menu == 5) {
-            cout << "function not yet available" << endl;
+            else if (menuSelection == 5) {
+                cout << "function not yet available" << endl;
             }
-        } while (!flag); 
+        } while (!flag);
 
         env->terminateConnection(conn);
         Environment::terminateEnvironment(env);
     }
-    catch (SQLException & sqlExcp) {
+    catch (SQLException& sqlExcp) {
         cout << sqlExcp.getErrorCode() << ": " << sqlExcp.getMessage();
     }
     return 0;
 }
 
 // menu function
-int const menuu()  {
-    int tmp; 
+int const menu() {
+    int tmp;
     bool flag = false;
 
     cout << "********************* HR Menu *********************" << endl;
@@ -153,46 +130,35 @@ int const menuu()  {
     cout << "4) Update Employee" << endl;
     cout << "5) Remove Employee" << endl;
     cout << "0) Exit" << endl;
-    
+
     do {
         tmp = getInt("Enter an option (0-5): ");
-        if (tmp > 5 || tmp < 0) { cout << "Invalid option, try again" << endl; }
+        if (tmp > 5 || tmp < 0)
+        {
+            cout << "Invalid option, try again" << endl;
+        }
         else { flag = true; }
     } while (!flag);
 
     return tmp;
 }
 
-int getInt(string prompt) {
+int getInt(const char* prompt) {
     int input;
     char next;
     bool flag = false;
 
-<<<<<<< Updated upstream:project.cpp
-    if (prompt != "")
-    {
-        cout << prompt;
-    }
-=======
     if (prompt) { cout << prompt; }
->>>>>>> Stashed changes:dbs_ms1.cpp
 
-     do {
+    do {
         cin >> input;
 
-        if (cin.fail() || input < -1 || input > 6) {
+        if (cin.fail()) {
             cerr << "Invalid option, try again" << endl;
             cin.clear();
             cin.ignore(1000, '\n');
             cout << prompt;
         }
-       /* else if (input < -1 || input > 6)
-        {
-            cerr << "Invalid option, try again" << endl;
-            cin.clear();
-            cin.ignore(1000, '\n');
-            cout << prompt;
-        }*/
         else {
             next = cin.get();
             if (next != '\n') {
@@ -201,7 +167,7 @@ int getInt(string prompt) {
             }
             else { flag = true; }
         }
-    } while(!flag);
+    } while (!flag);
 
     return input;
 }
@@ -211,54 +177,34 @@ int findEmployee(Connection* conn, int employeeNumber, struct Employee* emp) {
     int tmp = 0;
 
     try {
-       
-        Statement* stmt = conn->createStatement("SELECT e.employeenumber, e.lastname, e.firstname, e.extension, e.email, e.officecode, e.reportsTo, e.jobtitle FROM dbs211_employees e JOIN dbs211_offices o ON e.officecode = o.officecode WHERE e.employeenumber = :1");
+
+        Statement* stmt = conn->createStatement("SELECT * FROM dbs211_employees WHERE employeenumber = :1");
         stmt->setNumber(1, employeeNumber);
         ResultSet* rs = stmt->executeQuery();
-
-        if (rs->next()) {  
+        
+        if (rs->next()) {
             emp->employeeNumber = rs->getInt(1);
             strcpy(emp->lastName, rs->getString(2).c_str());
             strcpy(emp->firstName, rs->getString(3).c_str());
             strcpy(emp->extension, rs->getString(4).c_str());
-<<<<<<< Updated upstream:project.cpp
-            strcpy(emp->email, rs->getString(5).c_str());
-=======
             string* email = new string(rs->getString(5));
             strcpy(emp->email, email->c_str()); 
->>>>>>> Stashed changes:dbs_ms1.cpp
             strcpy(emp->officecode, rs->getString(6).c_str());
             emp->reportsTo = rs->getInt(7);
             strcpy(emp->jobTitle, rs->getString(8).c_str());
             
-            tmp = 1;    
+            tmp = 1;
         }
         conn->terminateStatement(stmt);
         return tmp;
     }
-    catch (SQLException & sqlExcp) {
+    catch (SQLException& sqlExcp) {
         cout << sqlExcp.getErrorCode() << ": " << sqlExcp.getMessage();
     }
 }
 
-void displayEmployee(Connection* conn, struct Employee emp)
+void displayEmployee(Connection* conn, struct Employee* emp)
 {
-<<<<<<< Updated upstream:project.cpp
-    int empNumber;
-    cout << "please enter the employee number: "; 
-    int empNumber = getInt();
-
-    if (findEmployee(empNumber) == 0)
-    {
-        cout << "Employee " << empNumber << "does not exist" << endl; 
-    }
-    else
-    {
-        displayEmployee(/*SOMETHING*/); 
-    }
-
-}
-=======
     cout << "-------------- Employee Information -------------" << endl
         << "Employee Number: " << emp->employeeNumber << endl
         << "Last Name: " << emp->lastName << endl
@@ -327,4 +273,3 @@ void displayAllEmployees(Connection* conn) {
         cout << "There is no employees� information to be displayed" << endl;
     }
 }
->>>>>>> Stashed changes:dbs_ms1.cpp
