@@ -6,7 +6,6 @@ Shawn Yu
 */
 
 #define _CRT_SECURE_NO_WARNINGS
-
 #include <iostream>
 #include <string.h>
 #include <occi.h>
@@ -28,7 +27,6 @@ struct Employee
     char officecode[10];
     int  reportsTo;
     char jobTitle[50];
-
 };
 
 //prototypes
@@ -38,6 +36,7 @@ int getInt(const char* prompt = nullptr);
 void displayEmployee(Connection* conn, struct Employee* emp);
 void insertEmployee(Connection* conn, struct Employee* emp);
 void displayAllEmployees(Connection* conn);
+void updateEmployee(Connection* conn, int employeeNumber);
 
 int main(void) {
     // OCCI Variables
@@ -102,7 +101,10 @@ int main(void) {
                 else { cout << "This employee already exist" << endl; }
             }
             else if (menuSelection == 4) {
-                cout << "function not yet available" << endl;
+                int empNumber; 
+                cout << "Employee Number: ";
+                cin >> empNumber; 
+                updateEmployee(conn, empNumber); 
             }
             else if (menuSelection == 5) {
                 cout << "function not yet available" << endl;
@@ -271,5 +273,32 @@ void displayAllEmployees(Connection* conn) {
     catch (SQLException& sqlExcp) {
         cout << sqlExcp.getErrorCode() << ": " << sqlExcp.getMessage();
         cout << "There is no employees� information to be displayed" << endl;
+    }
+}
+void updateEmployee(Connection* conn, int employeeNumber)
+{
+    bool found = true; 
+    Employee* emp{};
+    
+    if (findEmployee(conn, employeeNumber, emp))
+    {
+        /*If employee does exist, display the employee’s last name and first name and then ask the user to enter the new phone extension. Store the new extension in table employees for the given employee number.  */
+        cout << "Last name: " << emp->lastName << endl
+            << "first name: " << emp->firstName << endl; 
+        string newExtention;
+        cin >> newExtention;
+
+        Statement* stmt = conn->createStatement();
+        ResultSet* rs = stmt->executeQuery("UPDATE dbs211_employees SET :1 WHERE emplyeenumber = :2");
+        stmt->setNumber(1, stoi(newExtention));
+        stmt->setNumber(2, employeeNumber);
+        //strcpy(emp->extension,newExtention.c_str()); 
+        conn->commit();
+        conn->terminateStatement(stmt);
+        cout << "The employee's extension is updated successfully." << endl; 
+    }
+    else //if employee does not exist
+    {
+        cout << "The employee with ID " << employeeNumber << " does not exist." << endl;
     }
 }
